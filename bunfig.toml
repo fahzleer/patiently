@@ -1,0 +1,2 @@
+[serve]
+# Disable Bun's localStorage polyfill to prevent SSR conflicts with Next.js

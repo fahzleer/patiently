@@ -1,0 +1,26 @@
+# ── Dependencies ─────────────────────────────────────────────────────────────
+node_modules/
+
+# ── Next.js build output ─────────────────────────────────────────────────────
+.next/
+out/
+next-env.d.ts
+
+# ── Environment files (never commit real credentials) ────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ── Test artifacts ───────────────────────────────────────────────────────────
+test-results/
+playwright-report/
+playwright/.cache/
+
+# ── Claude Code — keep launch.json shared, keep local user settings out ──────
+.claude/settings.local.json
+
+# ── OS / editor ──────────────────────────────────────────────────────────────
+.DS_Store
+*.log
+.vscode/
+.idea/
