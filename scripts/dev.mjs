@@ -16,4 +16,18 @@ if (major >= 25) {
 
 const nextBin = createRequire(import.meta.url).resolve("next/dist/bin/next");
 const child = spawn(process.execPath, [nextBin, "dev"], { stdio: "inherit", env });
-child.on("exit", (code) => process.exit(code ?? 0));
+
+child.on("error", (err) => {
+  console.error("[dev] failed to spawn next:", err);
+  process.exit(1);
+});
+
+child.on("exit", (code, signal) => {
+  // Re-raise the terminating signal so callers (CI, terminals) see the real
+  // cause of death instead of a spurious exit 0.
+  if (signal) {
+    process.kill(process.pid, signal);
+    return;
+  }
+  process.exit(code ?? 1);
+});
