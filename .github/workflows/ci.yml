@@ -52,7 +52,11 @@ jobs:
         # tests/e2e/*.spec.ts Playwright files and crashes.
         run: bun test src
 
-  # ── Layer 3: E2E Tests (requires Firebase secrets) ───────────────────────────
+  # ── Layer 3: E2E Tests ──────────────────────────────────────────────────────
+  # PRs hit their own Vercel preview deployment (isolated per-PR URL, doesn't
+  # depend on prod uptime). Pushes to main hit the live prod URL as a post-
+  # deploy smoke test. Either way we're testing a real deployed bundle, so no
+  # local dev server is needed and no Firebase secrets leak into CI.
   e2e:
     name: E2E Tests
     runs-on: ubuntu-latest
@@ -70,17 +74,30 @@ jobs:
       - name: Install Playwright browsers
         run: bunx playwright install --with-deps chromium
 
+      - name: Wait for Vercel preview deployment
+        if: github.event_name == 'pull_request'
+        id: preview
+        uses: patrickedqvist/wait-for-vercel-preview@v1.3.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          max_timeout: 300
+
+      - name: Resolve Playwright base URL
+        id: base
+        run: |
+          if [ -n "${{ steps.preview.outputs.url }}" ]; then
+            echo "url=${{ steps.preview.outputs.url }}" >> "$GITHUB_OUTPUT"
+            echo "Target: Vercel preview (${{ steps.preview.outputs.url }})"
+          else
+            echo "url=https://patiently.lightningshot.co" >> "$GITHUB_OUTPUT"
+            echo "Target: production smoke test"
+          fi
+
       - name: Run E2E tests
         run: bunx playwright test
         env:
           CI: true
-          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
-          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
-          NEXT_PUBLIC_FIREBASE_DATABASE_URL: ${{ secrets.NEXT_PUBLIC_FIREBASE_DATABASE_URL }}
-          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
-          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
-          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
-          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+          PLAYWRIGHT_BASE_URL: ${{ steps.base.outputs.url }}
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4

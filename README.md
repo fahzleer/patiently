@@ -107,17 +107,7 @@ sessions/{sessionId}
 
 1. **Build** — with placeholder Firebase env, catches SSR regressions.
 2. **Unit** — `bun test src`.
-3. **E2E** — Playwright against the real Firebase project.
-
-The E2E job needs these repository secrets:
-
-- `NEXT_PUBLIC_FIREBASE_API_KEY`
-- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
-- `NEXT_PUBLIC_FIREBASE_DATABASE_URL`
-- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
-- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
-- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
-- `NEXT_PUBLIC_FIREBASE_APP_ID`
+3. **E2E** — Playwright against the live production URL (`https://patiently.lightningshot.co`). Firebase config is baked into the deployed bundle, so no repo secrets are needed.
 
 ---
 
