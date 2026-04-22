@@ -50,6 +50,84 @@ describe("validateField — phone", () => {
   });
 });
 
+describe("validateField — lastName", () => {
+  test("returns null for non-empty string", () => {
+    expect(validateField("lastName", "Doe")).toBeNull();
+  });
+  test("returns error for empty string", () => {
+    expect(validateField("lastName", "")).not.toBeNull();
+  });
+  test("returns error for whitespace-only", () => {
+    expect(validateField("lastName", "  ")).not.toBeNull();
+  });
+});
+
+describe("validateField — dateOfBirth", () => {
+  test("returns null for valid date string", () => {
+    expect(validateField("dateOfBirth", "1990-01-01")).toBeNull();
+  });
+  test("returns error for empty string", () => {
+    expect(validateField("dateOfBirth", "")).not.toBeNull();
+  });
+  test("returns error for whitespace-only", () => {
+    expect(validateField("dateOfBirth", "  ")).not.toBeNull();
+  });
+});
+
+describe("validateField — address", () => {
+  test("returns null for non-empty string", () => {
+    expect(validateField("address", "123 Main St, Bangkok")).toBeNull();
+  });
+  test("returns error for empty string", () => {
+    expect(validateField("address", "")).not.toBeNull();
+  });
+  test("returns error for whitespace-only", () => {
+    expect(validateField("address", "  ")).not.toBeNull();
+  });
+});
+
+describe("validateField — preferredLanguage", () => {
+  test("returns null for non-empty string", () => {
+    expect(validateField("preferredLanguage", "English")).toBeNull();
+  });
+  test("returns error for empty string", () => {
+    expect(validateField("preferredLanguage", "")).not.toBeNull();
+  });
+  test("returns error for whitespace-only", () => {
+    expect(validateField("preferredLanguage", "  ")).not.toBeNull();
+  });
+});
+
+describe("validateField — nationality", () => {
+  test("returns null for non-empty string", () => {
+    expect(validateField("nationality", "Thai")).toBeNull();
+  });
+  test("returns error for empty string", () => {
+    expect(validateField("nationality", "")).not.toBeNull();
+  });
+  test("returns error for whitespace-only", () => {
+    expect(validateField("nationality", "  ")).not.toBeNull();
+  });
+});
+
+describe("validateField — middleName (optional)", () => {
+  test("returns null for empty string", () => {
+    expect(validateField("middleName", "")).toBeNull();
+  });
+  test("returns null for non-empty string", () => {
+    expect(validateField("middleName", "James")).toBeNull();
+  });
+});
+
+describe("validateField — religion (optional)", () => {
+  test("returns null for empty string", () => {
+    expect(validateField("religion", "")).toBeNull();
+  });
+  test("returns null for non-empty string", () => {
+    expect(validateField("religion", "Buddhism")).toBeNull();
+  });
+});
+
 describe("validateField — gender", () => {
   test("returns null for 'male'", () => {
     expect(validateField("gender", "male")).toBeNull();
