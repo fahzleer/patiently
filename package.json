@@ -8,12 +8,13 @@
   },
   "scripts": {
     "preinstall": "node -e \"const ua = process.env.npm_config_user_agent || ''; if (!ua.startsWith('bun')) { process.stderr.write('\\n\\x1b[31mError: This project requires Bun.\\x1b[0m\\n  Install Bun: https://bun.sh\\n  Then run:   bun install\\n\\n'); process.exit(1); }\"",
-    "dev": "NODE_OPTIONS='--localstorage-file=.next/localstorage.json' next dev",
+    "dev": "node scripts/dev.mjs",
     "build": "next build",
     "start": "next start",
     "test": "bun test src",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "test:e2e:prod": "PLAYWRIGHT_BASE_URL=https://patiently.lightningshot.co playwright test",
     "test:all": "bun test src && playwright test"
   },
   "dependencies": {

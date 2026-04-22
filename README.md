@@ -7,6 +7,13 @@ Two pages, one Firebase Realtime Database, zero polling.
 - **`/`** — Patient registration form (auto-saves every 300 ms)
 - **`/staff`** — Live dashboard of every in-flight and submitted session
 
+## Live
+
+- Patient: https://patiently.lightningshot.co
+- Staff: https://patiently.lightningshot.co/staff
+
+Hosted on Vercel, domain on Cloudflare DNS → Squarespace registrar.
+
 ---
 
 ## Stack
@@ -53,7 +60,8 @@ Open http://localhost:3000 for the patient form and http://localhost:3000/staff 
 | `bun run build` | Production build (SSR regression guard) |
 | `bun start` | Serve the production build |
 | `bun test src` | Run unit tests (scoped — avoids Playwright `.spec.ts`) |
-| `bun test:e2e` | Run Playwright E2E suite |
+| `bun test:e2e` | Run Playwright E2E suite against `localhost:3000` |
+| `bun test:e2e:prod` | Run Playwright E2E suite against `https://patiently.lightningshot.co` |
 | `bun test:all` | Unit + E2E |
 
 ---

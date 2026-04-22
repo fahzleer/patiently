@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000";
+const isRemote = !baseURL.includes("localhost");
+
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: false, // serial — all tests share the same Firebase project
@@ -9,7 +12,7 @@ export default defineConfig({
   reporter: process.env.CI ? "github" : "list",
 
   use: {
-    baseURL: "http://localhost:3000",
+    baseURL,
     trace: "on-first-retry",
   },
 
@@ -20,11 +23,13 @@ export default defineConfig({
     },
   ],
 
-  // Start the Next.js dev server before running tests
-  webServer: {
-    command: "bun dev",
-    url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
-    timeout: 30_000,
-  },
+  // Only spin up a local dev server when targeting localhost.
+  webServer: isRemote
+    ? undefined
+    : {
+        command: "bun dev",
+        url: "http://localhost:3000",
+        reuseExistingServer: !process.env.CI,
+        timeout: 30_000,
+      },
 });
