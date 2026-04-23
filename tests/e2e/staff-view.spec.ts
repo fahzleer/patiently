@@ -16,8 +16,12 @@ test.describe("Staff View", () => {
     await patientPage.goto("/");
     await patientPage.getByLabel("First Name").waitFor({ timeout: 10_000 });
 
+    // Scope to the first card — staff view sorts filling sessions by
+    // lastActivityAt DESC, so the session just created is always first.
+    // Avoids strict-mode violation when stale "Anonymous" sessions from
+    // previous runs are still visible in Firebase.
     await expect(
-      staffPage.getByRole("heading", { name: "Anonymous" })
+      staffPage.locator("article").first().getByRole("heading", { name: "Anonymous" })
     ).toBeVisible({ timeout: 4_000 });
 
     await patientCtx.close();
