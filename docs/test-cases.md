@@ -1,7 +1,5 @@
 # Test Cases — Patiently 🧪
 
-## What's Inside
-
 | Type | Files | Cases |
 |------|-------|-------|
 | Unit Tests | 3 | 59 |
@@ -18,208 +16,147 @@
 
 ### `src/lib/validation.test.ts` — 43 cases
 
-This file checks that each form field behaves itself. Think of it as a bouncer at the door — only the right input gets in.
-
-**First Name (3 cases)**
-1. Any text entered → passes ✅
-2. Empty string → fails ❌
-3. Only whitespace → fails ❌
-
-**Email (3 cases)**
-4. Valid email format → passes ✅
-5. Missing the `@` → fails ❌
-6. Empty string → fails ❌
-
-**Phone (5 cases)**
-7. Number starting with `+66` → passes ✅
-8. Local number starting with `08x` → passes ✅
-9. Number with spaces → passes ✅
-10. Contains letters → fails ❌
-11. Empty string → fails ❌
-
-**Last Name (3 cases)**
-12. Any text entered → passes ✅
-13. Empty string → fails ❌
-14. Only whitespace → fails ❌
-
-**Date of Birth (3 cases)**
-15. Valid date string → passes ✅
-16. Empty string → fails ❌
-17. Only whitespace → fails ❌
-
-**Address (3 cases)**
-18. Any non-empty text → passes ✅
-19. Empty string → fails ❌
-20. Only whitespace → fails ❌
-
-**Preferred Language (3 cases)**
-21. Any non-empty text → passes ✅
-22. Empty string → fails ❌
-23. Only whitespace → fails ❌
-
-**Nationality (3 cases)**
-24. Any non-empty text → passes ✅
-25. Empty string → fails ❌
-26. Only whitespace → fails ❌
-
-**Middle Name — optional (2 cases)**
-27. Left blank → passes ✅ (optional, no stress)
-28. Filled in → passes ✅
-
-**Religion — optional (2 cases)**
-29. Left blank → passes ✅ (optional, no stress)
-30. Filled in → passes ✅
-
-**Gender (3 cases)**
-31. `male` → passes ✅
-32. `prefer_not_to_say` → passes ✅
-33. Value outside the allowed list → fails ❌
-
-**Emergency Contact — a pair (4 cases)**
-
-This one comes as a pair: a name and a relationship. You fill in both, or neither.
-
-34. Both blank → passes ✅ (the pair is tidy)
-35. Both filled → passes ✅ (the pair is tidy)
-36. Name filled, relationship missing → fails on the relationship field ❌
-37. Relationship filled, name missing → fails on the name field ❌
-
-**Required Fields Guard (3 cases)**
-
-A little safety net, so no one quietly adds or removes required fields by mistake.
-
-38. Exactly 9 required fields — no more, no less
-39. All the fields we expect are on the list
-40. No optional fields sneaking in
-
-**Is the Form Valid? (3 cases)**
-41. Fully empty form → not valid ❌
-42. All required fields valid → valid ✅
-43. One required field missing → not valid ❌
+| # | Field | Input | Expected |
+|---|-------|-------|----------|
+| 1 | First Name | Any text | ✅ Pass |
+| 2 | First Name | Empty string | ❌ Fail |
+| 3 | First Name | Whitespace only | ❌ Fail |
+| 4 | Email | Valid format (`john@example.com`) | ✅ Pass |
+| 5 | Email | Missing `@` | ❌ Fail |
+| 6 | Email | Empty string | ❌ Fail |
+| 7 | Phone | Starts with `+66` | ✅ Pass |
+| 8 | Phone | Local format (`08x`) | ✅ Pass |
+| 9 | Phone | Number with spaces | ✅ Pass |
+| 10 | Phone | Contains letters | ❌ Fail |
+| 11 | Phone | Empty string | ❌ Fail |
+| 12 | Last Name | Any text | ✅ Pass |
+| 13 | Last Name | Empty string | ❌ Fail |
+| 14 | Last Name | Whitespace only | ❌ Fail |
+| 15 | Date of Birth | Valid date string | ✅ Pass |
+| 16 | Date of Birth | Empty string | ❌ Fail |
+| 17 | Date of Birth | Whitespace only | ❌ Fail |
+| 18 | Address | Any non-empty text | ✅ Pass |
+| 19 | Address | Empty string | ❌ Fail |
+| 20 | Address | Whitespace only | ❌ Fail |
+| 21 | Preferred Language | Any non-empty text | ✅ Pass |
+| 22 | Preferred Language | Empty string | ❌ Fail |
+| 23 | Preferred Language | Whitespace only | ❌ Fail |
+| 24 | Nationality | Any non-empty text | ✅ Pass |
+| 25 | Nationality | Empty string | ❌ Fail |
+| 26 | Nationality | Whitespace only | ❌ Fail |
+| 27 | Middle Name *(optional)* | Left blank | ✅ Pass |
+| 28 | Middle Name *(optional)* | Filled in | ✅ Pass |
+| 29 | Religion *(optional)* | Left blank | ✅ Pass |
+| 30 | Religion *(optional)* | Filled in | ✅ Pass |
+| 31 | Gender | `male` | ✅ Pass |
+| 32 | Gender | `prefer_not_to_say` | ✅ Pass |
+| 33 | Gender | Value outside allowed list | ❌ Fail |
+| 34 | Emergency Contact | Both blank | ✅ Pass |
+| 35 | Emergency Contact | Both filled | ✅ Pass |
+| 36 | Emergency Contact | Name filled, relationship missing | ❌ Fail on relationship |
+| 37 | Emergency Contact | Relationship filled, name missing | ❌ Fail on name |
+| 38 | Required Fields Guard | Count of required fields | ✅ Exactly 9 |
+| 39 | Required Fields Guard | All expected fields present | ✅ All 9 found |
+| 40 | Required Fields Guard | No optional fields in required list | ✅ None sneaking in |
+| 41 | Form Valid? | Fully empty form | ❌ Not valid |
+| 42 | Form Valid? | All required fields valid | ✅ Valid |
+| 43 | Form Valid? | One required field missing | ❌ Not valid |
 
 ---
 
 ### `src/hooks/useStaffView.test.ts` — 14 cases
 
-This file looks after the staff screen — the live view nurses and receptionists see.
-
-**What's this patient up to? (5 cases)**
-
-The app works out whether a patient is still filling the form, has gone quiet, or has submitted. "Last activity" covers anything they do — typing, clicking, tabbing — not just typing.
-
-1. `filling` + last activity over 30 seconds ago → **inactive** (gone quiet)
-2. `filling` + last activity under 30 seconds ago → still **filling**
-3. `filling` + last activity right on the 29-second mark → still **filling** (edge case, handled)
-4. `submitted` + any last activity → stays **submitted**
-5. `inactive` + recent last activity → stays **inactive**
-
-**Should we show this session on the staff screen? (5 cases)**
-
-Empty, idle sessions shouldn't clutter the screen. Here's when a card shows up.
-
-6. `inactive` + all fields empty → hidden (ghost session, nothing to see)
-7. `inactive` + at least one field filled → shown (the patient started something)
-8. `filling` + all fields empty → shown (just opened the form, give them a sec)
-9. `submitted` + all fields empty → shown (they finished, they matter)
-10. `filling` + timed out + all fields empty → hidden (treated as inactive)
-
-**How long ago was that? (4 cases)**
-
-Turns a timestamp into something readable, like "2m ago".
-
-11. Under 5 seconds → `"just now"`
-12. 5 to 59 seconds → `"Xs ago"`
-13. 60 seconds or more → `"Xm ago"`
-14. 60 minutes or more → `"Xh ago"`
+| # | Group | Scenario | Expected |
+|---|-------|----------|----------|
+| 1 | Effective Status | `filling` + last activity > 30s ago | `inactive` |
+| 2 | Effective Status | `filling` + last activity < 30s ago | `filling` |
+| 3 | Effective Status | `filling` + last activity at 29s (edge case) | `filling` |
+| 4 | Effective Status | `submitted` + any last activity | `submitted` |
+| 5 | Effective Status | `inactive` + recent last activity | `inactive` |
+| 6 | Show Session? | `inactive` + all fields empty | Hidden (ghost session) |
+| 7 | Show Session? | `inactive` + at least one field filled | Shown |
+| 8 | Show Session? | `filling` + all fields empty | Shown (just opened) |
+| 9 | Show Session? | `submitted` + all fields empty | Shown |
+| 10 | Show Session? | `filling` + timed out + all fields empty | Hidden (treated as inactive) |
+| 11 | Relative Time | < 5 seconds ago | `"just now"` |
+| 12 | Relative Time | 5–59 seconds ago | `"Xs ago"` |
+| 13 | Relative Time | 60+ seconds ago | `"Xm ago"` |
+| 14 | Relative Time | 60+ minutes ago | `"Xh ago"` |
 
 ---
 
 ### `src/lib/session.test.ts` — 2 cases
 
-A tiny file, but important. It guards the session key's value.
-
-**Session Key Guard (2 cases)**
-1. The value is exactly `"patiently_session_id"`
-2. It doesn't contain `"agnos"` (the legacy name, now retired)
+| # | Scenario | Expected |
+|---|----------|----------|
+| 1 | Session key value | Exactly `"patiently_session_id"` |
+| 2 | Session key value | Does not contain `"agnos"` (legacy name) |
 
 ---
 
 ## E2E Tests (25 cases)
 
-These tests pretend to be a real user and click through the app for real.
-
 ### `tests/e2e/patient-form.spec.ts` — 6 cases
 
-**Happy Path — the everything-goes-right journey (4 cases)**
-1. The form loads without crashing
-2. The Submit button is disabled on an empty form
-3. The Submit button enables once every required field is filled
-4. The success screen appears after submit
-
-**Session Persistence — your work sticks around (2 cases)**
-5. Form data survives a page reload
-6. Once the form is submitted, the success screen stays after a reload — no double submits allowed
+| # | Group | Scenario | Expected |
+|---|-------|----------|----------|
+| 1 | Happy Path | Open the form | Loads without crashing |
+| 2 | Happy Path | Submit button on empty form | Disabled |
+| 3 | Happy Path | Submit button after all required fields filled | Enabled |
+| 4 | Happy Path | Click Submit | Success screen appears |
+| 5 | Session Persistence | Fill a field, then reload the page | Data still there |
+| 6 | Session Persistence | Submit, then reload | Success screen stays — no re-submit |
 
 ---
 
 ### `tests/e2e/form-structure.spec.ts` — 1 case
 
-**Form Structure — ARIA Snapshot (1 case)**
-1. The patient form fields match the accessibility spec. The ARIA tree is correct across all three sections — **Personal Information**, **Contact Information**, and **Additional Information** — plus the **Submit Registration** button. (This one keeps the form friendly for screen readers.)
+| # | Group | Scenario | Expected |
+|---|-------|----------|----------|
+| 1 | ARIA Snapshot | Form fields across all 3 sections + Submit button | Matches accessibility spec exactly |
 
 ---
 
 ### `tests/e2e/real-time-sync.spec.ts` — 3 cases
 
-The clever bit — what the patient types shows up on the staff screen live.
-
-1. Patient types a first name → staff see it within 2 seconds
-2. Two patients open the form at once → staff see two cards
-3. Patient submits → the staff card flips to **Submitted**
+| # | Scenario | Expected |
+|---|----------|----------|
+| 1 | Patient types first name | Staff see it within 2 seconds |
+| 2 | Two patients open the form at once | Staff see two separate cards |
+| 3 | Patient submits | Staff card flips to **Submitted** |
 
 ---
 
 ### `tests/e2e/regression.spec.ts` — 5 cases
 
-Regression tests are the "please don't break again" tests. Bugs we've fixed before — we want to make sure they stay fixed.
-
-**Server-side rendering — no crashes (2 cases)**
-1. The patient page loads with no console errors
-2. The staff page loads with no console errors
-
-**When Firebase isn't configured (2 cases)**
-3. The patient page shows an error UI instead of crashing
-4. The staff page shows an error UI instead of crashing
-
-**Session Key (1 case)**
-5. The key stored in `sessionStorage` is `patiently_session_id`
+| # | Group | Scenario | Expected |
+|---|-------|----------|----------|
+| 1 | SSR | Patient page loads | No console errors |
+| 2 | SSR | Staff page loads | No console errors |
+| 3 | Firebase unconfigured | Patient page | Error UI shown, no crash |
+| 4 | Firebase unconfigured | Staff page | Error UI shown, no crash |
+| 5 | Session Key | Key written to `sessionStorage` | Exactly `patiently_session_id` |
 
 ---
 
 ### `tests/e2e/validation-ux.spec.ts` — 6 cases
 
-Validation should feel kind, not naggy. Errors show up at the right moment, not while you're still typing.
-
-**Blur Behaviour — errors wait their turn (4 cases)**
-
-"Blur" means you've clicked away from a field. That's the polite moment to show an error.
-
-1. No error is shown whilst you're still typing (before blur)
-2. An error appears after blur on an empty required field
-3. The error clears once the field is filled correctly
-4. An invalid email shows an error after blur
-
-**Emergency Contact — the pair (2 cases)**
-5. Name filled, relationship missing → error on the relationship field
-6. Both fields filled → error clears
+| # | Group | Scenario | Expected |
+|---|-------|----------|----------|
+| 1 | Blur Behaviour | Still typing (no blur yet) | No error shown |
+| 2 | Blur Behaviour | Blur an empty required field | Error appears |
+| 3 | Blur Behaviour | Fill the field correctly after error | Error clears |
+| 4 | Blur Behaviour | Invalid email, then blur | Error appears |
+| 5 | Emergency Contact | Name filled, relationship missing | Error on relationship field |
+| 6 | Emergency Contact | Both fields filled | Error clears |
 
 ---
 
 ### `tests/e2e/staff-view.spec.ts` — 4 cases
 
-The staff screen, from a real user's point of view.
-
-1. The card shows **"Anonymous"** before any name is filled
-2. The card header shows the full name once the first and last names are filled
-3. Filling sessions appear before submitted ones in the card list
-4. The field progress counter increments as the patient fills the form
+| # | Scenario | Expected |
+|---|----------|----------|
+| 1 | Patient hasn't typed a name yet | Card shows **"Anonymous"** |
+| 2 | Patient fills first and last name | Card header shows full name |
+| 3 | One filling session, one submitted | Filling card appears first in list |
+| 4 | Patient fills more fields | Progress counter increments |
