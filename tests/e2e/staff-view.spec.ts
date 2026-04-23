@@ -91,12 +91,15 @@ test.describe("Staff View", () => {
     await patientPage.goto("/");
     await patientPage.getByLabel("First Name").waitFor({ timeout: 10_000 });
 
-    await patientPage.getByLabel("First Name").fill("CountTest");
+    // Unique per run — prevents stale Firebase sessions from previous runs
+    // causing "strict mode violation: resolved to 2 elements"
+    const firstName = `CT${Date.now()}`;
+    await patientPage.getByLabel("First Name").fill(firstName);
     await patientPage.getByLabel("Last Name").fill("User");
 
     // 2 out of 13 fields filled — number and label are in separate spans,
     // so scope to the card and match the label span only
-    const card = staffPage.locator("article", { hasText: "CountTest" });
+    const card = staffPage.locator("article", { hasText: firstName });
     await expect(
       card.getByText("/ 13 fields filled")
     ).toBeVisible({ timeout: 4_000 });
