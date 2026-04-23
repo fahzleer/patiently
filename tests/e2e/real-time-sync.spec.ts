@@ -6,7 +6,7 @@ import { fillRequiredFields } from "./helpers/fill-form";
 // Firebase must be configured via .env.local for these to pass.
 
 test.describe("Real-Time Sync", () => {
-  test("patient types first name → staff sees it within 2 seconds", async ({ browser }) => {
+  test("patient types first name", async ({ browser }) => {
     const patientCtx = await browser.newContext();
     const staffCtx = await browser.newContext();
 
@@ -32,7 +32,7 @@ test.describe("Real-Time Sync", () => {
     await staffCtx.close();
   });
 
-  test("two patients open simultaneously → staff sees two cards", async ({ browser }) => {
+  test("two patients open the form at once", async ({ browser }) => {
     const patient1Ctx = await browser.newContext();
     const patient2Ctx = await browser.newContext();
     const staffCtx = await browser.newContext();
@@ -63,7 +63,7 @@ test.describe("Real-Time Sync", () => {
     await staffCtx.close();
   });
 
-  test("patient submits → staff card changes to Submitted", async ({ browser }) => {
+  test("patient submits", async ({ browser }) => {
     const patientCtx = await browser.newContext();
     const staffCtx = await browser.newContext();
 

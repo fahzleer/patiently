@@ -1,22 +1,22 @@
 import { test, expect } from "@playwright/test";
 import { fillRequiredFields } from "./helpers/fill-form";
 
-test.describe("Patient Form — Happy Path", () => {
-  test("form loads without crashing", async ({ page }) => {
+test.describe("Happy Path", () => {
+  test("open the form", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("heading", { name: "Patient Registration" })).toBeVisible({
       timeout: 10_000,
     });
   });
 
-  test("submit button is disabled when form is empty", async ({ page }) => {
+  test("submit button on empty form", async ({ page }) => {
     await page.goto("/");
     await expect(page.getByRole("button", { name: "Submit Registration" })).toBeDisabled({
       timeout: 10_000,
     });
   });
 
-  test("submit button enables once all required fields are filled", async ({ page }) => {
+  test("submit button after all required fields filled", async ({ page }) => {
     await page.goto("/");
     await fillRequiredFields(page);
     await expect(page.getByRole("button", { name: "Submit Registration" })).toBeEnabled({
@@ -24,7 +24,7 @@ test.describe("Patient Form — Happy Path", () => {
     });
   });
 
-  test("shows success screen after submit", async ({ page }) => {
+  test("click submit", async ({ page }) => {
     await page.goto("/");
     await fillRequiredFields(page);
     await page.getByRole("button", { name: "Submit Registration" }).click();
@@ -34,8 +34,8 @@ test.describe("Patient Form — Happy Path", () => {
   });
 });
 
-test.describe("Patient Form — Session Persistence", () => {
-  test("form data survives a page reload", async ({ page }) => {
+test.describe("Session Persistence", () => {
+  test("fill a field, then reload the page", async ({ page }) => {
     await page.goto("/");
     await page.getByLabel("First Name").fill("James");
 
@@ -48,7 +48,7 @@ test.describe("Patient Form — Session Persistence", () => {
     });
   });
 
-  test("success screen persists after reload — no re-submit allowed", async ({ page }) => {
+  test("submit, then reload", async ({ page }) => {
     await page.goto("/");
     await fillRequiredFields(page);
     await page.getByRole("button", { name: "Submit Registration" }).click();

@@ -8,152 +8,152 @@ import { EMPTY_FORM_DATA, REQUIRED_FIELDS } from "@/types/PatientSession";
 
 // ─── validateField ───────────────────────────────────────────────────────────
 
-describe("validateField — firstName", () => {
-  test("returns null for non-empty string", () => {
+describe("First Name", () => {
+  test("any text", () => {
     expect(validateField("firstName", "John")).toBeNull();
   });
-  test("returns error for empty string", () => {
+  test("empty string", () => {
     expect(validateField("firstName", "")).not.toBeNull();
   });
-  test("returns error for whitespace-only", () => {
+  test("whitespace only", () => {
     expect(validateField("firstName", "  ")).not.toBeNull();
   });
 });
 
-describe("validateField — email", () => {
-  test("returns null for valid email", () => {
+describe("Email", () => {
+  test("valid format (`john@example.com`)", () => {
     expect(validateField("email", "john@example.com")).toBeNull();
   });
-  test("returns error for missing @", () => {
+  test("missing `@`", () => {
     expect(validateField("email", "johnexample.com")).not.toBeNull();
   });
-  test("returns error for empty string", () => {
+  test("empty string", () => {
     expect(validateField("email", "")).not.toBeNull();
   });
 });
 
-describe("validateField — phone", () => {
-  test("returns null for +66 format", () => {
+describe("Phone", () => {
+  test("starts with `+66`", () => {
     expect(validateField("phone", "+66812345678")).toBeNull();
   });
-  test("returns null for local format", () => {
+  test("local format (`08x`)", () => {
     expect(validateField("phone", "0812345678")).toBeNull();
   });
-  test("returns null for formatted with spaces", () => {
+  test("number with spaces", () => {
     expect(validateField("phone", "+66 81 234 5678")).toBeNull();
   });
-  test("returns error for letters", () => {
+  test("contains letters", () => {
     expect(validateField("phone", "abc")).not.toBeNull();
   });
-  test("returns error for empty string", () => {
+  test("empty string", () => {
     expect(validateField("phone", "")).not.toBeNull();
   });
 });
 
-describe("validateField — lastName", () => {
-  test("returns null for non-empty string", () => {
+describe("Last Name", () => {
+  test("any text", () => {
     expect(validateField("lastName", "Doe")).toBeNull();
   });
-  test("returns error for empty string", () => {
+  test("empty string", () => {
     expect(validateField("lastName", "")).not.toBeNull();
   });
-  test("returns error for whitespace-only", () => {
+  test("whitespace only", () => {
     expect(validateField("lastName", "  ")).not.toBeNull();
   });
 });
 
-describe("validateField — dateOfBirth", () => {
-  test("returns null for valid date string", () => {
+describe("Date of Birth", () => {
+  test("valid date string", () => {
     expect(validateField("dateOfBirth", "1990-01-01")).toBeNull();
   });
-  test("returns error for empty string", () => {
+  test("empty string", () => {
     expect(validateField("dateOfBirth", "")).not.toBeNull();
   });
-  test("returns error for whitespace-only", () => {
+  test("whitespace only", () => {
     expect(validateField("dateOfBirth", "  ")).not.toBeNull();
   });
 });
 
-describe("validateField — address", () => {
-  test("returns null for non-empty string", () => {
+describe("Address", () => {
+  test("any non-empty text", () => {
     expect(validateField("address", "123 Main St, Bangkok")).toBeNull();
   });
-  test("returns error for empty string", () => {
+  test("empty string", () => {
     expect(validateField("address", "")).not.toBeNull();
   });
-  test("returns error for whitespace-only", () => {
+  test("whitespace only", () => {
     expect(validateField("address", "  ")).not.toBeNull();
   });
 });
 
-describe("validateField — preferredLanguage", () => {
-  test("returns null for non-empty string", () => {
+describe("Preferred Language", () => {
+  test("any non-empty text", () => {
     expect(validateField("preferredLanguage", "English")).toBeNull();
   });
-  test("returns error for empty string", () => {
+  test("empty string", () => {
     expect(validateField("preferredLanguage", "")).not.toBeNull();
   });
-  test("returns error for whitespace-only", () => {
+  test("whitespace only", () => {
     expect(validateField("preferredLanguage", "  ")).not.toBeNull();
   });
 });
 
-describe("validateField — nationality", () => {
-  test("returns null for non-empty string", () => {
+describe("Nationality", () => {
+  test("any non-empty text", () => {
     expect(validateField("nationality", "Thai")).toBeNull();
   });
-  test("returns error for empty string", () => {
+  test("empty string", () => {
     expect(validateField("nationality", "")).not.toBeNull();
   });
-  test("returns error for whitespace-only", () => {
+  test("whitespace only", () => {
     expect(validateField("nationality", "  ")).not.toBeNull();
   });
 });
 
-describe("validateField — middleName (optional)", () => {
-  test("returns null for empty string", () => {
+describe("Middle Name (optional)", () => {
+  test("left blank", () => {
     expect(validateField("middleName", "")).toBeNull();
   });
-  test("returns null for non-empty string", () => {
+  test("filled in", () => {
     expect(validateField("middleName", "James")).toBeNull();
   });
 });
 
-describe("validateField — religion (optional)", () => {
-  test("returns null for empty string", () => {
+describe("Religion (optional)", () => {
+  test("left blank", () => {
     expect(validateField("religion", "")).toBeNull();
   });
-  test("returns null for non-empty string", () => {
+  test("filled in", () => {
     expect(validateField("religion", "Buddhism")).toBeNull();
   });
 });
 
-describe("validateField — gender", () => {
-  test("returns null for 'male'", () => {
+describe("Gender", () => {
+  test("`male`", () => {
     expect(validateField("gender", "male")).toBeNull();
   });
-  test("returns null for 'prefer_not_to_say'", () => {
+  test("`prefer_not_to_say`", () => {
     expect(validateField("gender", "prefer_not_to_say")).toBeNull();
   });
-  test("returns error for invalid value", () => {
+  test("value outside allowed list", () => {
     expect(validateField("gender", "unknown")).not.toBeNull();
   });
 });
 
 // ─── validateEmergencyContact ────────────────────────────────────────────────
 
-describe("validateEmergencyContact", () => {
-  test("returns null when both empty", () => {
+describe("Emergency Contact", () => {
+  test("both blank", () => {
     expect(validateEmergencyContact("", "")).toBeNull();
   });
-  test("returns null when both filled", () => {
+  test("both filled", () => {
     expect(validateEmergencyContact("Jane", "Spouse")).toBeNull();
   });
-  test("returns relationship error when only name filled", () => {
+  test("name filled, relationship missing", () => {
     const result = validateEmergencyContact("Jane", "");
     expect(result?.relationship).toBeDefined();
   });
-  test("returns name error when only relationship filled", () => {
+  test("relationship filled, name missing", () => {
     const result = validateEmergencyContact("", "Spouse");
     expect(result?.name).toBeDefined();
   });
@@ -164,12 +164,12 @@ describe("validateEmergencyContact", () => {
 // If someone adds a field and forgets to include it in REQUIRED_FIELDS,
 // or accidentally removes one, this test fails before it ships.
 
-describe("REQUIRED_FIELDS", () => {
-  test("contains exactly 9 fields", () => {
+describe("Required Fields Guard", () => {
+  test("count of required fields", () => {
     expect(REQUIRED_FIELDS).toHaveLength(9);
   });
 
-  test("includes all expected fields", () => {
+  test("all expected fields present", () => {
     const expected = [
       "firstName", "lastName", "dateOfBirth", "gender",
       "phone", "email", "address", "preferredLanguage", "nationality",
@@ -177,7 +177,7 @@ describe("REQUIRED_FIELDS", () => {
     expect(REQUIRED_FIELDS).toEqual(expect.arrayContaining(expected));
   });
 
-  test("does not include optional fields", () => {
+  test("no optional fields in required list", () => {
     expect(REQUIRED_FIELDS).not.toContain("middleName");
     expect(REQUIRED_FIELDS).not.toContain("religion");
     expect(REQUIRED_FIELDS).not.toContain("emergencyName");
@@ -187,12 +187,12 @@ describe("REQUIRED_FIELDS", () => {
 
 // ─── isFormValid ─────────────────────────────────────────────────────────────
 
-describe("isFormValid", () => {
-  test("returns false for empty form", () => {
+describe("Form Valid?", () => {
+  test("fully empty form", () => {
     expect(isFormValid(EMPTY_FORM_DATA)).toBe(false);
   });
 
-  test("returns true for fully valid form", () => {
+  test("all required fields valid", () => {
     expect(
       isFormValid({
         ...EMPTY_FORM_DATA,
@@ -209,7 +209,7 @@ describe("isFormValid", () => {
     ).toBe(true);
   });
 
-  test("returns false when one required field is missing", () => {
+  test("one required field missing", () => {
     expect(
       isFormValid({
         ...EMPTY_FORM_DATA,

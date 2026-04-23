@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Validation UX — Blur Behaviour", () => {
-  test("no error shown while typing (before blur)", async ({ page }) => {
+test.describe("Blur Behaviour", () => {
+  test("still typing (no blur yet)", async ({ page }) => {
     await page.goto("/");
     await page.getByLabel("First Name").focus();
 
@@ -10,7 +10,7 @@ test.describe("Validation UX — Blur Behaviour", () => {
     await expect(page.locator("form [role='alert']")).toHaveCount(0);
   });
 
-  test("error appears after blur on empty required field", async ({ page }) => {
+  test("blur an empty required field", async ({ page }) => {
     await page.goto("/");
     await page.getByLabel("First Name").focus();
     await page.getByLabel("First Name").blur();
@@ -20,7 +20,7 @@ test.describe("Validation UX — Blur Behaviour", () => {
     });
   });
 
-  test("error clears when field is filled correctly", async ({ page }) => {
+  test("fill the field correctly after error", async ({ page }) => {
     await page.goto("/");
     await page.getByLabel("First Name").focus();
     await page.getByLabel("First Name").blur();
@@ -31,7 +31,7 @@ test.describe("Validation UX — Blur Behaviour", () => {
     await expect(page.getByText("First name is required")).not.toBeVisible();
   });
 
-  test("invalid email shows error after blur", async ({ page }) => {
+  test("invalid email, then blur", async ({ page }) => {
     await page.goto("/");
     await page.getByLabel("Email").fill("not-an-email");
     await page.getByLabel("Email").blur();
@@ -40,8 +40,8 @@ test.describe("Validation UX — Blur Behaviour", () => {
   });
 });
 
-test.describe("Emergency Contact Group Validation", () => {
-  test("filling emergency name without relationship shows relationship error", async ({ page }) => {
+test.describe("Emergency Contact", () => {
+  test("name filled, relationship missing", async ({ page }) => {
     await page.goto("/");
 
     // Open the optional emergency contact section
@@ -54,7 +54,7 @@ test.describe("Emergency Contact Group Validation", () => {
     ).toBeVisible({ timeout: 3_000 });
   });
 
-  test("filling both emergency fields clears the error", async ({ page }) => {
+  test("both fields filled", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: /emergency contact/i }).click();
 

@@ -20,28 +20,28 @@ function makeSession(
 
 // ─── getEffectiveStatus ───────────────────────────────────────────────────────
 
-describe("getEffectiveStatus", () => {
-  test("returns 'inactive' when status=filling and lastActivityAt > 30s ago", () => {
+describe("Effective Status", () => {
+  test("`filling` + last activity > 30s ago", () => {
     const session = makeSession("filling", 35);
     expect(getEffectiveStatus(session)).toBe("inactive");
   });
 
-  test("returns 'filling' when status=filling and lastActivityAt < 30s ago", () => {
+  test("`filling` + last activity < 30s ago", () => {
     const session = makeSession("filling", 10);
     expect(getEffectiveStatus(session)).toBe("filling");
   });
 
-  test("returns 'filling' when lastActivityAt is exactly at the boundary (29s)", () => {
+  test("`filling` + last activity at 29s (edge case)", () => {
     const session = makeSession("filling", 29);
     expect(getEffectiveStatus(session)).toBe("filling");
   });
 
-  test("returns 'submitted' unchanged regardless of lastActivityAt", () => {
+  test("`submitted` + any last activity", () => {
     const session = makeSession("submitted", 60);
     expect(getEffectiveStatus(session)).toBe("submitted");
   });
 
-  test("returns 'inactive' unchanged when status=inactive", () => {
+  test("`inactive` + recent last activity", () => {
     const session = makeSession("inactive", 5);
     expect(getEffectiveStatus(session)).toBe("inactive");
   });
@@ -49,28 +49,28 @@ describe("getEffectiveStatus", () => {
 
 // ─── shouldShowSession ────────────────────────────────────────────────────────
 
-describe("shouldShowSession", () => {
-  test("hides inactive session with all fields empty (ghost session)", () => {
+describe("Show Session?", () => {
+  test("`inactive` + all fields empty", () => {
     const ghost = makeSession("inactive", 60);
     expect(shouldShowSession(ghost)).toBe(false);
   });
 
-  test("shows inactive session that has at least one field filled", () => {
+  test("`inactive` + at least one field filled", () => {
     const session = { ...makeSession("inactive", 60), formData: { ...EMPTY_FORM_DATA, firstName: "Sarah" } };
     expect(shouldShowSession(session)).toBe(true);
   });
 
-  test("shows filling session even with all fields empty (patient just opened form)", () => {
+  test("`filling` + all fields empty", () => {
     const fresh = makeSession("filling", 5);
     expect(shouldShowSession(fresh)).toBe(true);
   });
 
-  test("shows submitted session with all fields empty", () => {
+  test("`submitted` + all fields empty", () => {
     const submitted = makeSession("submitted", 60);
     expect(shouldShowSession(submitted)).toBe(true);
   });
 
-  test("hides filling session that timed out with no data (effective status = inactive)", () => {
+  test("`filling` + timed out + all fields empty", () => {
     // status=filling but lastActivityAt > 30s → getEffectiveStatus returns inactive
     const ghost = makeSession("filling", 60);
     expect(shouldShowSession(ghost)).toBe(false);
@@ -79,23 +79,23 @@ describe("shouldShowSession", () => {
 
 // ─── formatRelativeTime ───────────────────────────────────────────────────────
 
-describe("formatRelativeTime", () => {
-  test("returns 'just now' for < 5 seconds", () => {
+describe("Relative Time", () => {
+  test("< 5 seconds ago", () => {
     const ts = new Date(Date.now() - 2_000).toISOString();
     expect(formatRelativeTime(ts)).toBe("just now");
   });
 
-  test("returns seconds format for 5-59 seconds", () => {
+  test("5-59 seconds ago", () => {
     const ts = new Date(Date.now() - 20_000).toISOString();
     expect(formatRelativeTime(ts)).toBe("20s ago");
   });
 
-  test("returns minutes format for 60+ seconds", () => {
+  test("60+ seconds ago", () => {
     const ts = new Date(Date.now() - 90_000).toISOString();
     expect(formatRelativeTime(ts)).toBe("1m ago");
   });
 
-  test("returns hours format for 60+ minutes", () => {
+  test("60+ minutes ago", () => {
     const ts = new Date(Date.now() - 3_600_000).toISOString();
     expect(formatRelativeTime(ts)).toBe("1h ago");
   });
