@@ -43,7 +43,7 @@ test.describe("Staff View", () => {
     await patientPage.getByLabel("Last Name").fill("Kelly");
 
     await expect(
-      staffPage.getByRole("heading", { name: "Grace Kelly" })
+      staffPage.getByRole("heading", { name: "Grace Kelly" }).first()
     ).toBeVisible({ timeout: 4_000 });
 
     await patientCtx.close();
