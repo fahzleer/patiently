@@ -25,7 +25,7 @@ test.describe("Real-Time Sync", () => {
     // Match the session-card heading specifically — the name also appears in the
     // field-preview <dd>, which would trip strict-mode.
     await expect(
-      staffPage.getByRole("heading", { name: "RealTimeTest" })
+      staffPage.getByRole("heading", { name: "RealTimeTest" }).first()
     ).toBeVisible({ timeout: 4_000 });
 
     await patientCtx.close();
@@ -52,10 +52,10 @@ test.describe("Real-Time Sync", () => {
     await patient2.getByLabel("First Name").fill("BobSync");
 
     await expect(
-      staffPage.getByRole("heading", { name: "AliceSync" })
+      staffPage.getByRole("heading", { name: "AliceSync" }).first()
     ).toBeVisible({ timeout: 4_000 });
     await expect(
-      staffPage.getByRole("heading", { name: "BobSync" })
+      staffPage.getByRole("heading", { name: "BobSync" }).first()
     ).toBeVisible({ timeout: 4_000 });
 
     await patient1Ctx.close();
