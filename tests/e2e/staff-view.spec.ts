@@ -5,7 +5,7 @@ import { fillRequiredFields } from "./helpers/fill-form";
 // don't bleed between cases. Firebase must be live for these to pass.
 
 test.describe("Staff View", () => {
-  test("card shows 'Anonymous' before any name is filled", async ({ browser }) => {
+  test("patient hasn't typed a name yet", async ({ browser }) => {
     const patientCtx = await browser.newContext();
     const staffCtx = await browser.newContext();
 
@@ -28,7 +28,7 @@ test.describe("Staff View", () => {
     await staffCtx.close();
   });
 
-  test("card header shows full name once first and last name are filled", async ({ browser }) => {
+  test("patient fills first and last name", async ({ browser }) => {
     const patientCtx = await browser.newContext();
     const staffCtx = await browser.newContext();
 
@@ -50,7 +50,7 @@ test.describe("Staff View", () => {
     await staffCtx.close();
   });
 
-  test("filling session appears before submitted in the card list", async ({ browser }) => {
+  test("one filling session, one submitted", async ({ browser }) => {
     const patient1Ctx = await browser.newContext();
     const patient2Ctx = await browser.newContext();
     const staffCtx = await browser.newContext();
@@ -84,7 +84,7 @@ test.describe("Staff View", () => {
     await staffCtx.close();
   });
 
-  test("field progress counter increments as patient fills the form", async ({ browser }) => {
+  test("patient fills more fields", async ({ browser }) => {
     const patientCtx = await browser.newContext();
     const staffCtx = await browser.newContext();
 

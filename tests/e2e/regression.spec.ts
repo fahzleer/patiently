@@ -4,8 +4,8 @@ import { test, expect } from "@playwright/test";
 // Each test here corresponds to a specific bug that was fixed.
 // If the test fails, a known bug has come back.
 
-test.describe("SSR — No crash on server render", () => {
-  test("patient page loads without console errors", async ({ page }) => {
+test.describe("SSR", () => {
+  test("patient page loads", async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (err) => errors.push(err.message));
 
@@ -18,7 +18,7 @@ test.describe("SSR — No crash on server render", () => {
     expect(seriousErrors).toHaveLength(0);
   });
 
-  test("staff page loads without console errors", async ({ page }) => {
+  test("staff page loads", async ({ page }) => {
     const errors: string[] = [];
     page.on("pageerror", (err) => errors.push(err.message));
 
@@ -32,25 +32,25 @@ test.describe("SSR — No crash on server render", () => {
   });
 });
 
-test.describe("Firebase not configured — graceful error screen", () => {
+test.describe("Firebase unconfigured", () => {
   // If NEXT_PUBLIC_FIREBASE_DATABASE_URL is missing, the app must show
   // an error screen instead of crashing with an unhandled exception.
-  test("patient page shows error UI when Firebase is unavailable", async ({ page }) => {
+  test("patient page", async ({ page }) => {
     await page.goto("/");
     // Either the form loads (Firebase ok) or an error card is shown — never a blank crash
     const formOrError = page.locator("main");
     await expect(formOrError).toBeVisible({ timeout: 10_000 });
   });
 
-  test("staff page shows error UI when Firebase is unavailable", async ({ page }) => {
+  test("staff page", async ({ page }) => {
     await page.goto("/staff");
     const mainContent = page.locator("main");
     await expect(mainContent).toBeVisible({ timeout: 10_000 });
   });
 });
 
-test.describe("Session persistence regression", () => {
-  test("session key in sessionStorage is patiently_session_id", async ({ page }) => {
+test.describe("Session Key", () => {
+  test("key written to sessionStorage", async ({ page }) => {
     await page.goto("/");
     // Wait for the app to initialise and write the key
     await page.waitForTimeout(2_000);

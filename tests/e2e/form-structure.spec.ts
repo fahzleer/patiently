@@ -9,8 +9,8 @@ import { test, expect } from "@playwright/test";
 // If this test fails after a intentional change, run:
 //   bunx playwright test form-structure --update-snapshots
 
-test.describe("Form Structure — ARIA Snapshot", () => {
-  test("patient form fields match accessibility spec", async ({ page }) => {
+test.describe("ARIA Snapshot", () => {
+  test("form fields across all 3 sections + submit button", async ({ page }) => {
     await page.goto("/");
     // Wait for Firebase init — form only renders after session is created
     await page.getByLabel("First Name").waitFor({ timeout: 10_000 });

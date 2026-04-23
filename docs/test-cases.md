@@ -16,7 +16,7 @@
 
 ### `src/lib/validation.test.ts` — 43 cases
 
-| # | Field | Input | Expected |
+| # | Group | Scenario | Expected |
 |---|-------|-------|----------|
 | 1 | First Name | Any text | ✅ Pass |
 | 2 | First Name | Empty string | ❌ Fail |
@@ -87,10 +87,10 @@
 
 ### `src/lib/session.test.ts` — 2 cases
 
-| # | Scenario | Expected |
-|---|----------|----------|
-| 1 | Session key value | Exactly `"patiently_session_id"` |
-| 2 | Session key value | Does not contain `"agnos"` (legacy name) |
+| # | Group | Scenario | Expected |
+|---|-------|----------|----------|
+| 1 | Session key value | Exactly `"patiently_session_id"` | ✅ Match |
+| 2 | Session key value | Does not contain `"agnos"` (legacy name) | ✅ No match |
 
 ---
 
@@ -119,11 +119,11 @@
 
 ### `tests/e2e/real-time-sync.spec.ts` — 3 cases
 
-| # | Scenario | Expected |
-|---|----------|----------|
-| 1 | Patient types first name | Staff see it within 2 seconds |
-| 2 | Two patients open the form at once | Staff see two separate cards |
-| 3 | Patient submits | Staff card flips to **Submitted** |
+| # | Group | Scenario | Expected |
+|---|-------|----------|----------|
+| 1 | Real-Time Sync | Patient types first name | Staff see it within 2 seconds |
+| 2 | Real-Time Sync | Two patients open the form at once | Staff see two separate cards |
+| 3 | Real-Time Sync | Patient submits | Staff card flips to **Submitted** |
 
 ---
 
@@ -154,9 +154,9 @@
 
 ### `tests/e2e/staff-view.spec.ts` — 4 cases
 
-| # | Scenario | Expected |
-|---|----------|----------|
-| 1 | Patient hasn't typed a name yet | Card shows **"Anonymous"** |
-| 2 | Patient fills first and last name | Card header shows full name |
-| 3 | One filling session, one submitted | Filling card appears first in list |
-| 4 | Patient fills more fields | Progress counter increments |
+| # | Group | Scenario | Expected |
+|---|-------|----------|----------|
+| 1 | Staff View | Patient hasn't typed a name yet | Card shows **"Anonymous"** |
+| 2 | Staff View | Patient fills first and last name | Card header shows full name |
+| 3 | Staff View | One filling session, one submitted | Filling card appears first in list |
+| 4 | Staff View | Patient fills more fields | Progress counter increments |
