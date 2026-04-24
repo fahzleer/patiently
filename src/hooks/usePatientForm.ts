@@ -77,7 +77,10 @@ export function usePatientForm(): UsePatientFormReturn {
 
         // Register onDisconnect hook — if the WebSocket drops (browser close,
         // network loss, crash), Firebase server marks us inactive automatically.
-        await registerDisconnect(id);
+        // Skip for submitted sessions: they must stay "submitted" permanently.
+        if (existing?.status !== "submitted") {
+          await registerDisconnect(id);
+        }
       } catch (err) {
         const msg = err instanceof Error ? err.message : "Failed to connect to database";
         setFirebaseError(msg);
