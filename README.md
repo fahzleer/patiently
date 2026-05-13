@@ -9,8 +9,8 @@ Two pages, one Firebase Realtime Database, zero polling.
 
 ## Live
 
-- Patient: https://patiently.lightningshot.co
-- Staff: https://patiently.lightningshot.co/staff
+- Patient: https://patiently-seven.vercel.app
+- Staff: https://patiently-seven.vercel.app/staff
 
 Hosted on Vercel, domain on Cloudflare DNS → Squarespace registrar.
 
@@ -61,7 +61,7 @@ Open http://localhost:3000 for the patient form and http://localhost:3000/staff 
 | `bun start` | Serve the production build |
 | `bun test src` | Run unit tests (scoped — avoids Playwright `.spec.ts`) |
 | `bun test:e2e` | Run Playwright E2E suite against `localhost:3000` |
-| `bun test:e2e:prod` | Run Playwright E2E suite against `https://patiently.lightningshot.co` |
+| `bun test:e2e:prod` | Run Playwright E2E suite against `https://patiently-seven.vercel.app` |
 | `bun test:all` | Unit + E2E |
 
 ---
@@ -107,7 +107,7 @@ sessions/{sessionId}
 
 1. **Build** — with placeholder Firebase env, catches SSR regressions.
 2. **Unit** — `bun test src`.
-3. **E2E** — Playwright against the live production URL (`https://patiently.lightningshot.co`). Firebase config is baked into the deployed bundle, so no repo secrets are needed.
+3. **E2E** — Playwright against the live production URL (`https://patiently-seven.vercel.app`). Firebase config is baked into the deployed bundle, so no repo secrets are needed.
 
 ---
 
