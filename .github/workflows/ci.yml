@@ -89,7 +89,7 @@ jobs:
             echo "url=${{ steps.preview.outputs.url }}" >> "$GITHUB_OUTPUT"
             echo "Target: Vercel preview (${{ steps.preview.outputs.url }})"
           else
-            echo "url=https://patiently.lightningshot.co" >> "$GITHUB_OUTPUT"
+            echo "url=https://patiently-seven.vercel.app" >> "$GITHUB_OUTPUT"
             echo "Target: production smoke test"
           fi
 
