@@ -1,6 +1,7 @@
 import {
   ref,
   set,
+  get,
   update,
   onValue,
   off,
@@ -59,17 +60,9 @@ export async function createSession(sessionId: string): Promise<void> {
 export async function fetchSession(
   sessionId: string
 ): Promise<PatientSession | null> {
-  return new Promise((resolve) => {
-    const sessionRef = ref(getDb(), `${SESSIONS_PATH}/${sessionId}`);
-    onValue(
-      sessionRef,
-      (snapshot) => {
-        off(sessionRef);
-        resolve(snapshot.exists() ? (snapshot.val() as PatientSession) : null);
-      },
-      { onlyOnce: true }
-    );
-  });
+  const sessionRef = ref(getDb(), `${SESSIONS_PATH}/${sessionId}`);
+  const snapshot = await get(sessionRef);
+  return snapshot.exists() ? (snapshot.val() as PatientSession) : null;
 }
 
 export async function updateFormData(
